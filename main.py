@@ -22,6 +22,7 @@ def main():
     out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
     out_dir.mkdir(parents=True, exist_ok=True)
     dest = out_dir / "entry.png"
+    # Delivered verbatim: the shipped PNG is the graded artifact.
     shutil.copyfile(SRC, dest)
     # Self-check: the copy must be a whole PNG within the 1 MiB gate.
     data = dest.read_bytes()
