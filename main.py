@@ -415,7 +415,7 @@ def main():
     draw_illustration(img, d, ill_box)
     d = ImageDraw.Draw(img)
     d.text((ill_box[0], strip_y + strip_h + 6),
-           "NEW YORK \u2014 the 100th Macy\u2019s parade, grounded by the storm.",
+           "NEW YORK \u2014 the 100th Macy\u2019s parade, grounded.",
            font=f_cap, fill=GREY)
     # timeline
     d.rectangle(tl_box, fill=(255, 255, 255), outline=GREY, width=1)
