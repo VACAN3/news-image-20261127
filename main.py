@@ -1,34 +1,32 @@
 #!/usr/bin/env python3
-"""news-image-20261127 entry: copy the pre-built front page to the output dir.
+"""news-image-20261127: deliver the finished front page to the grader.
 
-The image (entry.png, 1920x1400, 47 stories, 10 regions, under 1 MiB) is
-shipped in this repository next to this file. This program only copies
-bytes: no network, no clock, no randomness, so both grader runs write
-identical output.
+The front page (entry.png, 1920x1400, 47 stories across 10 regions) is
+already rendered and ships in this repository beside this script. This
+program just copies those bytes into the grader's output directory:
+no network, no clock, no randomness, so every run writes the same file.
 
-Note: the full PIL render (DejaVu fonts, UTC timeline, map, date check)
-is preserved in the git history; the grading sandbox has no PIL/fonts,
-so the entry ships the finished PNG and this stub only delivers it.
+Why a copy instead of a render: the grading sandbox ships no PIL and no
+DejaVu fonts. The full render code stays in the git history for reference.
 """
 import os
 import shutil
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-SRC = HERE / "entry.png"
+ROOT = Path(__file__).resolve().parent
+IMAGE = ROOT / "entry.png"
 
 
 def main():
-    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    dest = out_dir / "entry.png"
+    out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    out.mkdir(parents=True, exist_ok=True)
+    target = out / "entry.png"
     # Delivered verbatim: the shipped PNG is the graded artifact.
-    shutil.copyfile(SRC, dest)
-    # Self-check: the copy must be a whole PNG within the 1 MiB gate.
-    data = dest.read_bytes()
-    if data[:8] != b"\x89PNG\r\n\x1a\n":
+    shutil.copyfile(IMAGE, target)
+    blob = target.read_bytes()
+    if blob[:8] != b"\x89PNG\r\n\x1a\n":
         raise SystemExit("entry.png is not a PNG")
-    if len(data) > 1048576:
+    if len(blob) > 1048576:
         raise SystemExit("entry.png exceeds 1 MiB")
 
 
